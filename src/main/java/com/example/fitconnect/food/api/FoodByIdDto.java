@@ -14,7 +14,7 @@ public class FoodByIdDto {
     @NotNull
     private String name;
     private BigDecimal calories;
-    private BigDecimal proteins;
-    private BigDecimal carbohydrates;
-    private BigDecimal fats;
+    private BigDecimal proteins = BigDecimal.ZERO;
+    private BigDecimal carbohydrates = BigDecimal.ZERO;
+    private BigDecimal fats = BigDecimal.ZERO;
 }

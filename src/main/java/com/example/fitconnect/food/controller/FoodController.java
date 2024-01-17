@@ -56,7 +56,7 @@ public class FoodController {
     @Parameter(name = "id", description = "Food Id", required = true)
     @PatchMapping("/{id}")
     public ResponseEntity<FoodByIdDto> update(@PathVariable String id,
-                                              @RequestBody FoodByIdDto payload){
+                                              @RequestBody @Valid FoodByIdDto payload){
         return ResponseEntity.ok(foodService.update(id, payload));
     }
 }
