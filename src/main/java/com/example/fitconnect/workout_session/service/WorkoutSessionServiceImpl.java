@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class WorkoutSessionServiceImpl implements WorkoutSessionService {
@@ -68,5 +69,12 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 //        workoutSessionRepository.save(workoutSession);
 
         return modelMapper.map(workoutSession, WorkoutSessionByIdDto.class);
+    }
+
+    @Override
+    public List<WorkoutSessionByIdDto> getAll() {
+        return workoutSessionRepository.findAll().stream()
+                .map(workout -> modelMapper.map(workout, WorkoutSessionByIdDto.class))
+                .collect(Collectors.toList());
     }
 }

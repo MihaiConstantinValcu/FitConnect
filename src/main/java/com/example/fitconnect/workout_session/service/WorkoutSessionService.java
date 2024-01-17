@@ -12,4 +12,6 @@ public interface WorkoutSessionService {
     WorkoutSessionByIdDto getById(String id);
 
     WorkoutSessionByIdDto addExercises(String id, List<WorkoutExerciseByIdDto> payload);
+
+    List<WorkoutSessionByIdDto> getAll();
 }

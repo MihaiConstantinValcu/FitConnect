@@ -11,6 +11,7 @@ import com.example.fitconnect.meal_item.repository.MealItemRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -81,5 +82,12 @@ public class MealServiceImpl implements MealService{
         mealRepository.save(meal);
 
         return modelMapper.map(meal, MealByIdDto.class);
+    }
+
+    @Override
+    public List<MealByIdDto> getAllByDate(LocalDate date) {
+        return mealRepository.findAllByDate(date).stream()
+                .map(meal -> modelMapper.map(meal, MealByIdDto.class))
+                .collect(Collectors.toList());
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 public class WorkoutSession extends BaseEntity {
-    private LocalDate localDate;
+    private LocalDate date;
     private Integer duration;
 
     @OneToMany(mappedBy = "workoutSession")

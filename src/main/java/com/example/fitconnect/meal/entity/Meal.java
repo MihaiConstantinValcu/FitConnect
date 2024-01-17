@@ -17,7 +17,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class Meal extends BaseEntity {
-    private LocalDate localDate;
+    private LocalDate date;
 
     @Enumerated(value = EnumType.STRING)
     private MealType mealType;

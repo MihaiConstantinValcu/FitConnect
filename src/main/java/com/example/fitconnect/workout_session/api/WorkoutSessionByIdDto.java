@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 public class WorkoutSessionByIdDto {
     private String id;
-    private LocalDate localDate;
+    private LocalDate date;
     private Integer duration;
     private List<WorkoutExercise> exercises = new ArrayList<>();
 }
