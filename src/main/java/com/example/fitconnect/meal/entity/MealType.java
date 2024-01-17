@@ -1,4 +1,4 @@
-package com.example.fitconnect.meal;
+package com.example.fitconnect.meal.entity;
 
 public enum MealType {
     MAIN_MEAL,

@@ -1,4 +1,4 @@
-package com.example.fitconnect.food;
+package com.example.fitconnect.food.entity;
 
 import com.example.fitconnect.base_entity.BaseEntity;
 import jakarta.persistence.Entity;

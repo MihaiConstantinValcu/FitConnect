@@ -1,4 +1,4 @@
-package com.example.fitconnect.meal;
+package com.example.fitconnect.meal.entity;
 
 import com.example.fitconnect.base_entity.BaseEntity;
 import com.example.fitconnect.meal_item.entity.MealItem;

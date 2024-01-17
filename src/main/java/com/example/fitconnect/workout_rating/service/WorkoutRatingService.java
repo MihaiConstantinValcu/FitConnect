@@ -1,2 +1,4 @@
-package com.example.fitconnect.workout_rating.service;public interface WorkoutRatingService {
+package com.example.fitconnect.workout_rating.service;
+
+public interface WorkoutRatingService {
 }

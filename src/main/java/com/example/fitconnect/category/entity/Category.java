@@ -1,14 +1,13 @@
-package com.example.fitconnect.category;
+package com.example.fitconnect.category.entity;
 
 import com.example.fitconnect.base_entity.BaseEntity;
-import com.example.fitconnect.exercise.Exercise;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.fitconnect.exercise.entity.Exercise;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -17,6 +16,5 @@ public class Category extends BaseEntity {
     private String name;
 
     @OneToMany(mappedBy = "category")
-    @JsonIgnore
-    private List<Exercise> exercises;
+    private Set<Exercise> exercises;
 }

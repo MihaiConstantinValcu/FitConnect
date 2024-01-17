@@ -1,55 +1,83 @@
-package com.example.fitconnect.exercise_category.service;
+package com.example.fitconnect.category.service;
 
-import com.example.fitconnect.exercise.Exercise;
-import com.example.fitconnect.exercise.service.ExerciseService;
-import com.example.fitconnect.exercise_category.ExerciseCategory;
-import com.example.fitconnect.exercise_category.api.ExerciseCategoryByIdDto;
-import com.example.fitconnect.exercise_category.repository.ExerciseCategoryRepository;
+import com.example.fitconnect.category.entity.Category;
+import com.example.fitconnect.category.api.CategoryByIdDto;
+import com.example.fitconnect.category.repository.CategoryRepository;
+import com.example.fitconnect.exercise.api.ExerciseByIdDto;
+import com.example.fitconnect.exercise.entity.Exercise;
+import com.example.fitconnect.exercise.repository.ExerciseRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
-public class ExerciseCategoryServiceImpl implements ExerciseCategoryService{
-
-    private final ExerciseCategoryRepository exerciseCategoryRepository;
-    private final ExerciseService exerciseService;
+public class CategoryServiceImpl implements CategoryService {
+    private final CategoryRepository categoryRepository;
+    private final ExerciseRepository exerciseRepository;
     private final ModelMapper modelMapper;
 
-    public ExerciseCategoryServiceImpl(ExerciseCategoryRepository exerciseCategoryRepository, ExerciseService exerciseService, ModelMapper modelMapper) {
-        this.exerciseCategoryRepository = exerciseCategoryRepository;
-        this.exerciseService = exerciseService;
+    public CategoryServiceImpl(CategoryRepository categoryRepository, ExerciseRepository exerciseRepository, ModelMapper modelMapper) {
+        this.categoryRepository = categoryRepository;
+        this.exerciseRepository = exerciseRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public ExerciseCategoryByIdDto getById(String id) {
-        return null;
+    public CategoryByIdDto getById(String id) {
+        return categoryRepository.findById(id)
+                .map(category -> modelMapper.map(category, CategoryByIdDto.class))
+                .orElseThrow(() -> new RuntimeException("Category not found"));
     }
 
     @Override
-    public ExerciseCategoryByIdDto save(ExerciseCategoryByIdDto payload) {
-//        ExerciseCategory exerciseCategory = new ExerciseCategory();
-//        String id = UUID.randomUUID().toString();
-//
-//        Set<Exercise> exercises = new HashSet<>();
-//
-//        payload.getExercises().forEach(exerciseDto -> {
-//            Exercise exercise = modelMapper.map(exerciseService.save(exerciseDto), Exercise.class);
-//            exercises.add(exercise);
-//            exerciseDto.setId(exercise.getId());
-//        });
-//
-//        modelMapper.map(payload, exerciseCategory);
-//        exerciseCategory.setId(id);
-//
-//        exerciseCategory.setExercises(exercises);
-//        exerciseCategoryRepository.save(exerciseCategory);
-//        payload.setId(exerciseCategory.getId());
-//
-//        return payload;
+    public CategoryByIdDto save(CategoryByIdDto payload) {
+        Category category = modelMapper.map(payload, Category.class);
+        category.setId(UUID.randomUUID().toString());
+
+        return modelMapper.map(categoryRepository.save(category), CategoryByIdDto.class);
+    }
+
+    @Override
+    public List<CategoryByIdDto> getAll() {
+        return categoryRepository.findAll().stream()
+                .map(category -> modelMapper.map(category, CategoryByIdDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public CategoryByIdDto addExercise(String id, List<ExerciseByIdDto> payload) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        Set<Exercise> exercises = category.getExercises();
+
+        payload.forEach(dto -> {
+            Exercise exercise = exerciseRepository.findById(dto.getId())
+                    .orElseThrow(() -> new RuntimeException("Exercise not found"));
+            exercise.setCategory(category);
+            exerciseRepository.save(exercise);
+
+            exercises.add(exercise);
+        });
+
+        category.setExercises(exercises);
+        categoryRepository.save(category);
+
+        return modelMapper.map(category, CategoryByIdDto.class);
+    }
+
+    @Override
+    public CategoryByIdDto update(String id, CategoryByIdDto payload) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        category.setName(payload.getName());
+        categoryRepository.save(category);
+
+        return modelMapper.map(category, CategoryByIdDto.class);
     }
 }

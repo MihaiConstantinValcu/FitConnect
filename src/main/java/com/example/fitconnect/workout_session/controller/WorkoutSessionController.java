@@ -1,2 +1,40 @@
-package com.example.fitconnect.workout_session.controller;public class WorkoutSessionController {
+package com.example.fitconnect.workout_session.controller;
+
+import com.example.fitconnect.exercise.api.ExerciseByIdDto;
+import com.example.fitconnect.workout_exercise.api.WorkoutExerciseByIdDto;
+import com.example.fitconnect.workout_session.api.WorkoutSessionByIdDto;
+import com.example.fitconnect.workout_session.service.WorkoutSessionService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import static com.example.fitconnect.workout_session.controller.WorkoutSessionController.WORKOUT_SESSION_URL;
+
+@RestController
+@RequestMapping(WORKOUT_SESSION_URL)
+public class WorkoutSessionController {
+    public final static String WORKOUT_SESSION_URL = "/workout-sessions";
+
+    private final WorkoutSessionService workoutSessionService;
+
+    public WorkoutSessionController(WorkoutSessionService workoutSessionService) {
+        this.workoutSessionService = workoutSessionService;
+    }
+
+    @PostMapping
+    public ResponseEntity<WorkoutSessionByIdDto> save(@RequestBody WorkoutSessionByIdDto payload){
+        return ResponseEntity.ok(workoutSessionService.save(payload));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<WorkoutSessionByIdDto> getById(@PathVariable String id){
+        return ResponseEntity.ok(workoutSessionService.getById(id));
+    }
+
+    @PatchMapping("/{id}/add-exercises")
+    public ResponseEntity<WorkoutSessionByIdDto> addExercises(@PathVariable String id,
+                                                              @RequestBody List<WorkoutExerciseByIdDto> payload){
+        return ResponseEntity.ok(workoutSessionService.addExercises(id, payload));
+    }
 }
