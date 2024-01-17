@@ -1,7 +1,8 @@
 package com.example.fitconnect.workout_session.controller;
 
-import com.example.fitconnect.exercise.api.ExerciseByIdDto;
 import com.example.fitconnect.workout_exercise.api.WorkoutExerciseByIdDto;
+import com.example.fitconnect.workout_rating.api.WorkoutRatingByIdDto;
+import com.example.fitconnect.workout_rating.service.WorkoutRatingService;
 import com.example.fitconnect.workout_session.api.WorkoutSessionByIdDto;
 import com.example.fitconnect.workout_session.service.WorkoutSessionService;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,11 @@ public class WorkoutSessionController {
     public final static String WORKOUT_SESSION_URL = "/workout-sessions";
 
     private final WorkoutSessionService workoutSessionService;
+    private final WorkoutRatingService workoutRatingService;
 
-    public WorkoutSessionController(WorkoutSessionService workoutSessionService) {
+    public WorkoutSessionController(WorkoutSessionService workoutSessionService, WorkoutRatingService workoutRatingService) {
         this.workoutSessionService = workoutSessionService;
+        this.workoutRatingService = workoutRatingService;
     }
 
     @PostMapping
@@ -36,5 +39,16 @@ public class WorkoutSessionController {
     public ResponseEntity<WorkoutSessionByIdDto> addExercises(@PathVariable String id,
                                                               @RequestBody List<WorkoutExerciseByIdDto> payload){
         return ResponseEntity.ok(workoutSessionService.addExercises(id, payload));
+    }
+
+    @PostMapping("/{id}/ratings")
+    public ResponseEntity<WorkoutRatingByIdDto> addRating(@PathVariable String id,
+                                                          @RequestBody WorkoutRatingByIdDto payload){
+        return ResponseEntity.ok(workoutRatingService.save(id, payload));
+    }
+
+    @GetMapping("/{id}/ratings")
+    public ResponseEntity<List<WorkoutRatingByIdDto>> getAllRatings(@PathVariable String id){
+        return ResponseEntity.ok(workoutRatingService.getAllByWorkoutId(id));
     }
 }
