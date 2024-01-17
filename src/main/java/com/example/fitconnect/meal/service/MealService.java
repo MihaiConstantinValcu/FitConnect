@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface MealService {
-    List<MealByIdDto> getAll();
 
     MealByIdDto getById(String id);
 

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,7 +48,7 @@ public class CategoryController {
             description = "Creates a new category based on the information received in the request")
     @Parameter(name = "payload", description = "Category details", required = true)
     @PostMapping
-    public ResponseEntity<CategoryByIdDto> save(@RequestBody CategoryByIdDto payload) {
+    public ResponseEntity<CategoryByIdDto> save(@RequestBody @Valid CategoryByIdDto payload) {
         return ResponseEntity.ok(categoryService.save(payload));
     }
 
@@ -57,7 +58,7 @@ public class CategoryController {
     @Parameter(name = "id", description = "Category Id", required = true)
     @PatchMapping("/{id}")
     public ResponseEntity<CategoryByIdDto> update(@PathVariable String id,
-                                                  @RequestBody CategoryByIdDto payload) {
+                                                  @RequestBody @Valid CategoryByIdDto payload) {
         return ResponseEntity.ok(categoryService.update(id, payload));
     }
 
@@ -67,7 +68,7 @@ public class CategoryController {
     @Parameter(name = "id", description = "Category ID", required = true)
     @PatchMapping("/{id}/add-exercise")
     public ResponseEntity<CategoryByIdDto> addExercise(@PathVariable String id,
-                                                       @RequestBody List<ExerciseByIdDto> payload) {
+                                                       @RequestBody @Valid List<ExerciseByIdDto> payload) {
         return ResponseEntity.ok(categoryService.addExercise(id, payload));
     }
 }

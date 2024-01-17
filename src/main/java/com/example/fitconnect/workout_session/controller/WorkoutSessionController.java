@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +40,7 @@ public class WorkoutSessionController {
             description = "Adds a new workout session with details and a list of workout exercises")
     @Parameter(name = "payload", description = "Workout session details", required = true)
     @PostMapping
-    public ResponseEntity<WorkoutSessionByIdDto> save(@RequestBody WorkoutSessionByIdDto payload){
+    public ResponseEntity<WorkoutSessionByIdDto> save(@RequestBody @Valid WorkoutSessionByIdDto payload){
         return ResponseEntity.ok(workoutSessionService.save(payload));
     }
 
@@ -60,7 +61,7 @@ public class WorkoutSessionController {
     @Parameter(name = "id", description = "Workout session ID", required = true)
     @PatchMapping("/{id}/add-exercises")
     public ResponseEntity<WorkoutSessionByIdDto> addExercises(@PathVariable String id,
-                                                              @RequestBody List<WorkoutExerciseByIdDto> payload){
+                                                              @RequestBody @Valid List<WorkoutExerciseByIdDto> payload){
         return ResponseEntity.ok(workoutSessionService.addExercises(id, payload));
     }
 
@@ -70,7 +71,7 @@ public class WorkoutSessionController {
     @Parameter(name = "id", description = "Workout session ID", required = true)
     @PostMapping("/{id}/ratings")
     public ResponseEntity<WorkoutRatingByIdDto> addRating(@PathVariable String id,
-                                                          @RequestBody WorkoutRatingByIdDto payload){
+                                                          @RequestBody @Valid WorkoutRatingByIdDto payload){
         return ResponseEntity.ok(workoutRatingService.save(id, payload));
     }
 

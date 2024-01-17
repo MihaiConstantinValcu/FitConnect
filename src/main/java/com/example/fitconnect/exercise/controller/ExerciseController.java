@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.apache.coyote.BadRequestException;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,7 +47,7 @@ public class ExerciseController {
     @Parameter(name = "payload", description = "Exercise details", required = true)
     @Parameter(name = "categoryId", description = "Category Id", required = true)
     @PostMapping("/categoryId/{categoryId}")
-    public ResponseEntity<ExerciseByIdDto> save(@RequestBody ExerciseByIdDto payload,
+    public ResponseEntity<ExerciseByIdDto> save(@RequestBody @Valid ExerciseByIdDto payload,
                                                 @PathVariable String categoryId){
         return ResponseEntity.ok(exerciseService.save(payload, categoryId));
     }

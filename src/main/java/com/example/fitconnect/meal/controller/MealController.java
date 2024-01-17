@@ -1,6 +1,5 @@
 package com.example.fitconnect.meal.controller;
 
-import com.example.fitconnect.food.api.FoodByIdDto;
 import com.example.fitconnect.meal.api.MealByIdDto;
 import com.example.fitconnect.meal.service.MealService;
 import com.example.fitconnect.meal_item.api.MealItemByIdDto;
@@ -8,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,13 +28,7 @@ public class MealController {
     }
 
     @Operation(summary = "Get all meals")
-    @GetMapping
-    public ResponseEntity<List<MealByIdDto>> getAll(){
-        return ResponseEntity.ok(mealService.getAll());
-    }
-
-    @Operation(summary = "Get all meals by a specific date")
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<List<MealByIdDto>> getAllByDate(@RequestParam LocalDate date){
         return ResponseEntity.ok(mealService.getAllByDate(date));
     }
@@ -53,7 +47,7 @@ public class MealController {
             description = "Adds a new meal based on the information received in the request")
     @Parameter(name = "payload", description = "Meal details", required = true)
     @PostMapping
-    public ResponseEntity<MealByIdDto> save(@RequestBody MealByIdDto payload){
+    public ResponseEntity<MealByIdDto> save(@RequestBody @Valid MealByIdDto payload){
         return ResponseEntity.ok(mealService.save(payload));
     }
 
@@ -61,7 +55,7 @@ public class MealController {
             description = "Meal items consists of a food item and a quantity")
     @Parameter(name = "payload", description = "Meal Item details", required = true)
     @PatchMapping("/{id}/add-food")
-    public ResponseEntity<MealByIdDto> addFood(@PathVariable String id, @RequestBody List<MealItemByIdDto> payload){
+    public ResponseEntity<MealByIdDto> addFood(@PathVariable String id, @RequestBody @Valid List<MealItemByIdDto> payload){
         return ResponseEntity.ok(mealService.addFood(id, payload));
     }
 }

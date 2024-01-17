@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,7 +46,7 @@ public class FoodController {
             description = "Adds a new food type based on the information received in the request")
     @Parameter(name = "payload", description = "Food details", required = true)
     @PostMapping
-    public ResponseEntity<FoodByIdDto> save(@RequestBody FoodByIdDto payload){
+    public ResponseEntity<FoodByIdDto> save(@RequestBody @Valid FoodByIdDto payload){
         return ResponseEntity.ok(foodService.save(payload));
     }
 

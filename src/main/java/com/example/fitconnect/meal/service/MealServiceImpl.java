@@ -13,12 +13,13 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class MealServiceImpl implements MealService{
+public class MealServiceImpl implements MealService {
 
     private final MealRepository mealRepository;
     private final FoodRepository foodRepository;
@@ -33,8 +34,13 @@ public class MealServiceImpl implements MealService{
     }
 
     @Override
-    public List<MealByIdDto> getAll() {
-        return mealRepository.findAll().stream()
+    public List<MealByIdDto> getAllByDate(LocalDate date) {
+        if (Objects.isNull(date)) {
+            return mealRepository.findAll().stream()
+                    .map(meal -> modelMapper.map(meal, MealByIdDto.class))
+                    .collect(Collectors.toList());
+        }
+        return mealRepository.findAllByDate(date).stream()
                 .map(meal -> modelMapper.map(meal, MealByIdDto.class))
                 .collect(Collectors.toList());
     }
@@ -84,10 +90,5 @@ public class MealServiceImpl implements MealService{
         return modelMapper.map(meal, MealByIdDto.class);
     }
 
-    @Override
-    public List<MealByIdDto> getAllByDate(LocalDate date) {
-        return mealRepository.findAllByDate(date).stream()
-                .map(meal -> modelMapper.map(meal, MealByIdDto.class))
-                .collect(Collectors.toList());
-    }
+
 }
