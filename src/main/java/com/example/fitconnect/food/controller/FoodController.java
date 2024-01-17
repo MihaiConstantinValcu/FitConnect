@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,5 +59,11 @@ public class FoodController {
     public ResponseEntity<FoodByIdDto> update(@PathVariable String id,
                                               @RequestBody @Valid FoodByIdDto payload){
         return ResponseEntity.ok(foodService.update(id, payload));
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleUnexpectedErrors(Exception e) {
+        return e.getMessage();
     }
 }

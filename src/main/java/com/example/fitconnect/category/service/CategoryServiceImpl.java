@@ -8,6 +8,7 @@ import com.example.fitconnect.exercise.entity.Exercise;
 import com.example.fitconnect.exercise.repository.ExerciseRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Set;
@@ -30,7 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryByIdDto getById(String id) {
         return categoryRepository.findById(id)
                 .map(category -> modelMapper.map(category, CategoryByIdDto.class))
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new NotFoundException("test"));
     }
 
     @Override

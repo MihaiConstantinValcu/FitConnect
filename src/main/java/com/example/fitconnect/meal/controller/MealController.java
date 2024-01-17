@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,8 +29,8 @@ public class MealController {
     }
 
     @Operation(summary = "Get all meals")
-    @GetMapping()
-    public ResponseEntity<List<MealByIdDto>> getAllByDate(@RequestParam LocalDate date){
+    @GetMapping
+    public ResponseEntity<List<MealByIdDto>> getAllByDate(@RequestParam(required = false) LocalDate date){
         return ResponseEntity.ok(mealService.getAllByDate(date));
     }
 
@@ -57,5 +58,10 @@ public class MealController {
     @PatchMapping("/{id}/add-food")
     public ResponseEntity<MealByIdDto> addFood(@PathVariable String id, @RequestBody @Valid List<MealItemByIdDto> payload){
         return ResponseEntity.ok(mealService.addFood(id, payload));
+    }
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleUnexpectedErrors(Exception e) {
+        return e.getMessage();
     }
 }

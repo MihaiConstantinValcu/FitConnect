@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ public class CategoryController {
     @Operation(summary = "Get category based on specified ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The Category information was successfully retrieved"),
-            @ApiResponse(responseCode = "404", description = "The Category with the provided ID doesn't exist")
+            @ApiResponse(responseCode = "500", description = "The Category with the provided ID doesn't exist")
     })
     @Parameter(name = "id", description = "Category ID", required = true)
     @GetMapping("/{id}")
@@ -70,5 +71,11 @@ public class CategoryController {
     public ResponseEntity<CategoryByIdDto> addExercise(@PathVariable String id,
                                                        @RequestBody @Valid List<ExerciseByIdDto> payload) {
         return ResponseEntity.ok(categoryService.addExercise(id, payload));
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleUnexpectedErrors(Exception e) {
+        return e.getMessage();
     }
 }

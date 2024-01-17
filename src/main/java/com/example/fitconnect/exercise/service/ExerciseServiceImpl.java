@@ -37,13 +37,10 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     @Override
-    public ExerciseByIdDto save(ExerciseByIdDto payload, String categoryId) {
+    public ExerciseByIdDto save(ExerciseByIdDto payload) {
         Exercise exercise = modelMapper.map(payload, Exercise.class);
         exercise.setId(UUID.randomUUID().toString());
 
-        Category category = modelMapper.map(categoryService.getById(categoryId), Category.class);
-
-        exercise.setCategory(category);
         exerciseRepository.save(exercise);
 
         return modelMapper.map(exercise, ExerciseByIdDto.class);

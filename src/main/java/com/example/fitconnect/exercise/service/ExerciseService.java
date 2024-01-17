@@ -8,7 +8,7 @@ import java.util.List;
 public interface ExerciseService {
     ExerciseByIdDto getById(String id);
 
-    ExerciseByIdDto save(ExerciseByIdDto payload, String categoryId);
+    ExerciseByIdDto save(ExerciseByIdDto payload);
 
     void delete(String id);
 

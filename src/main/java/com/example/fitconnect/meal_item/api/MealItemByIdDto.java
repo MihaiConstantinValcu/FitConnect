@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class MealItemByIdDto {
+    private String id;
     @NotNull
     private FoodByIdDto food;
     private BigDecimal quantity;

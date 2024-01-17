@@ -2,8 +2,10 @@ package com.example.fitconnect.category.entity;
 
 import com.example.fitconnect.base_entity.BaseEntity;
 import com.example.fitconnect.exercise.entity.Exercise;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
 
